@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progescam Consulting | Interim Management & AI First Training</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Paleta Ejecutiva: Fondo Gris Intermedio Degradado + Teal */
+        :root {
+            --mck-dark-blue: #0F172A;
+            --mck-blue: #17CFD7;
+            --mck-electric: #00EBEB;
+            --bg-gradient: linear-gradient(180deg, #334155 0%, #1E293B 100%); 
+            --mck-white: #FFFFFF;
+            --mck-text-light: #F8FAFC;
+            --mck-text-muted: #94A3B8;
+            --card-bg: rgba(30, 41, 59, 0.7); 
+            --inner-block-bg: rgba(15, 23, 42, 0.65);
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            --border-sutil: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--mck-text-light);
+            line-height: 1.6;
+            background-color: #1E293B;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        header {
+            background-color: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            color: var(--mck-white);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid var(--border-sutil);
+        }
+
+        .nav-container {
+            max-width: 1400px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 3rem;
+        }
+
+        .logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+        .logo span { color: var(--mck-blue); }
+
+        nav ul { display: flex; gap: 2rem; list-style: none; }
+        
+        nav ul li a { 
+            color: var(--mck-white); 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            opacity: 0.8; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            padding-bottom: 4px;
+        }
+        nav ul li a:hover, nav ul li a.active { 
+            color: var(--mck-blue) !important; 
+            opacity: 1; 
+            border-bottom: 2px solid var(--mck-blue);
+        }
+
+        .lang-container { border: 1px solid rgba(255,255,255,0.4); padding: 0.4rem 0.8rem; font-size: 0.75rem; cursor: pointer; font-weight: bold; }
+
+        main { margin-top: 70px; flex-grow: 1; }
+        section { display: none; min-height: calc(100vh - 70px); }
+        section.active-section { display: flex; flex-direction: column; animation: fadeIn 0.5s ease-in-out; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .hero-banner {
+            position: relative; height: 400px; background-size: cover; background-position: center;
+            display: flex; align-items: flex-end; padding: 4rem 3rem;
+            border-bottom: 1px solid var(--border-sutil);
+        }
+
+        .hero-banner::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.85) 10%, rgba(15, 23, 42, 0.1) 100%);
+        }
+
+        .banner-text-wrapper { position: relative; max-width: 1200px; margin: 0 auto; width: 100%; z-index: 2; }
+        .banner-text-wrapper h1 { color: var(--mck-white); font-size: 3.2rem; font-weight: 700; line-height: 1.1; letter-spacing: -1px; }
+
+        .page-content-area { background: var(--bg-gradient); flex-grow: 1; padding: 5rem 3rem; }
+        .content-container { max-width: 1200px; margin: 0 auto; }
+
+        .intro-subtitle {
+            font-size: 1.85rem; color: var(--mck-white); font-weight: 300; line-height: 1.35;
+            margin-bottom: 4rem; border-left: 4px solid var(--mck-blue); padding-left: 1.5rem;
+        }
+
+        .mck-grid-cards { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 2rem; 
+            margin-bottom: 3rem; 
+        }
+
+        .mck-grid-2-cols {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .mck-card {
+            background-color: var(--card-bg);
+            padding: 3rem 2rem; border: 1px solid var(--border-sutil);
+            display: flex; flex-direction: column; justify-content: space-between; min-height: 380px;
+            border-radius: 12px; transition: all 0.3s ease;
+        }
+        .mck-card:hover { transform: translateY(-5px); border-color: rgba(23, 207, 215, 0.3); background-color: rgba(30, 41, 59, 0.9); }
+        .mck-card .card-number { font-size: 3rem; font-weight: 700; color: var(--mck-blue); line-height: 1; margin-bottom: 1.5rem; font-family: 'Georgia', serif; }
+        .mck-card h3 { font-size: 1.35rem; color: var(--mck-white); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; line-height: 1.3; }
+        .mck-card p { color: var(--mck-text-muted); font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1; }
+
+        .btn-mck {
+            background-color: var(--mck-blue); color: var(--mck-dark-blue);
+            padding: 1rem 2.5rem; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer;
+            transition: 0.3s; text-decoration: none; display: inline-block;
+            border-radius: 9999px; text-align: center;
+        }
+        .btn-mck:hover { background-color: var(--mck-white); box-shadow: 0 0 20px rgba(23, 207, 215, 0.4); }
+
+        /* Contenedor flexible de botones de acción en las subpáginas */
+        .sub-actions-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-back {
+            background-color: transparent; color: var(--mck-white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 1.5rem; font-size: 0.8rem; border-radius: 9999px;
+            cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-back:hover { border-color: var(--mck-blue); color: var(--mck-blue); }
+
+        .btn-pdf {
+            background-color: rgba(255, 255, 255, 0.1); color: var(--mck-white);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.75rem 1.5rem; font-size: 0.8rem; border-radius: 9999px;
+            cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-pdf:hover { background-color: var(--mck-blue); color: var(--mck-dark-blue); font-weight: 700; border-color: var(--mck-blue); }
+
+        /* Program AI First Styles */
+        .ai-first-container { background: var(--inner-block-bg); border: 1px solid var(--border-sutil); padding: 4rem; margin-bottom: 4rem; border-radius: 12px; }
+        .program-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--mck-blue); padding-bottom: 2rem; margin-bottom: 3rem; }
+        .program-header h2 { font-size: 2.5rem; font-weight: 700; color: var(--mck-white); }
+        .text-teal-corporate { color: var(--mck-blue) !important; }
+        .program-badge { background: var(--mck-blue); color: var(--mck-dark-blue); padding: 0.6rem 1.5rem; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; border-radius: 4px; font-weight: 700; }
+        .block-title { font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; color: var(--mck-blue); margin: 3rem 0 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; font-weight: 700; }
+        
+        .prd-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+        .prd-list li { position: relative; padding-left: 1.5rem; font-size: 1rem; color: var(--mck-text-light); }
+        .prd-list li::before { content: "▪"; position: absolute; left: 0; color: var(--mck-blue); font-size: 1.2rem; top: -2px; }
+        
+        /* Matriz unificada de 3 columnas para Capacidades, Beneficios y Herramientas */
+        .capacities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+        .capacity-box {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 4px solid var(--mck-blue); 
+            padding: 1.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: var(--mck-text-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 160px;
+            transition: all 0.3s ease;
+        }
+        .capacity-box:hover {
+            background-color: rgba(255, 255, 255, 0.07);
+            border-color: rgba(23, 207, 215, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Accordion */
+        .sessions-list { display: flex; flex-direction: column; gap: 1rem; }
+        .session-accordion { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-top: 4px solid var(--mck-blue); border-radius: 8px; overflow: hidden; }
+        .accordion-trigger { width: 100%; background: transparent; border: none; padding: 2rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left; }
+        .accordion-trigger .title-group { display: flex; align-items: center; gap: 1.5rem; }
+        .accordion-trigger .num { font-size: 2rem; font-weight: 700; color: var(--mck-blue); font-family: Georgia, serif; }
+        .accordion-trigger h4 { font-size: 1.25rem; color: var(--mck-white); font-weight: 700; }
+        .accordion-trigger .chevron { font-size: 1.2rem; color: var(--mck-blue); transition: transform 0.3s; }
+        .session-accordion.active .chevron { transform: rotate(180deg); }
+        .accordion-content { display: none; padding: 0 2rem 2rem 5.5rem; background: rgba(0,0,0,0.1); }
+        .session-accordion.active .accordion-content { display: block; }
+
+        form { background: var(--inner-block-bg); padding: 4rem; max-width: 850px; margin: 0 auto; border: 1px solid var(--border-sutil); border-radius: 12px; }
+        .form-group { margin-bottom: 2rem; }
+        .form-group label { display: block; margin-bottom: 0.7rem; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--mck-blue); }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.2); color: white; font-family: var(--font-main); border-radius: 6px; }
+
+        footer { background-color: rgba(15, 23, 42, 0.95); color: var(--mck-text-muted); padding: 5rem 3rem 3rem; font-size: 0.85rem; border-top: 1px solid var(--border-sutil); }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
+        .footer-col h5 { color: white; margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.9rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.8rem; }
+        .footer-col a { color: inherit; text-decoration: none; transition: color 0.3s; cursor: pointer; }
+        .footer-col a:hover { color: var(--mck-blue); }
+
+        @media (max-width: 992px) {
+            .nav-container { padding: 1rem 1.5rem; }
+            nav ul { gap: 1rem; }
+            .hero-banner { height: 350px; }
+            .banner-text-wrapper h1 { font-size: 2.2rem; }
+            .capacities-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .capacities-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">PROGESCAM<span>.</span>CONSULTING</div>
+            <nav>
+                <ul id="nav-links">
+                    <li><a onclick="navigateTo('inicio')" id="link-inicio" class="active">Inicio</a></li>
+                    <li><a onclick="navigateTo('sobreMi')" id="link-sobreMi">Sobre Mí</a></li>
+                    <li><a onclick="navigateTo('servicios')" id="link-servicios">Servicios</a></li>
+                    <li><a onclick="navigateTo('metodologia')" id="link-metodologia">Metodología</a></li>
+                    <li><a onclick="navigateTo('formacion')" id="link-formacion">Formación</a></li>
+                    <li><a onclick="navigateTo('contacto')" id="link-contacto">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="lang-container" onclick="toggleLanguage()">
+                <span id="lang-btn">ES | EN</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="active-section">
+            <div class="hero-banner" style="background-image: url('4014821-0-22722900-1751373243-Unlocking-AI-Machine-learning-as-a-service.webp');">
+                <div class="banner-text-wrapper">
+                    <h1 id="hero-title">Dirección Interim Estratégica & Transformación</h1>
+                </div>
+            </div>
+            <div class="page-content-area">
+                <div class="content-container">
+                    <p id="hero-subtitle" class="intro-subtitle">Resultados acelerados, gestión del cambio y soluciones de liderazgo ejecutivo inmediato para empresas en transición crítica.</p>
+                    <button class="btn-mck" onclick="navigateTo('contacto')" id="hero-btn">Iniciar Consulta Estratégica</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="sobreMi">
+            <div class="hero-banner" style="background-image: url('IMG_2857.jpg');">
+                <div class="banner-text-wrapper">
+                    <h1 id="about-title">Sobre Mí</h1>
+                </div>
+            </div>
+            <div class="page-content-area">
+                <div class="container content-container">
+                    <p id="about-subtitle" class="intro-subtitle">Trayectoria ejecutiva senior orientada a aportar estabilidad y criterio estratégico desde el día uno.</p>
+                    <div class="mck-grid-cards">
+                        <div class="mck-card">
+                            <div class="card-number">01</div>
+                            <h3 id="about-c1-t">Experiencia Senior</h3>
+                            <p id="about-c1-p">Más de 15 años liderando en situaciones de crisis y crecimiento.</p>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">02</div>
+                            <h3 id="about-c2-t">Visión 360º</h3>
+                            <p id="about-c2-p">Capacidad de diagnóstico rápido integrando finanzas y operaciones.</p>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">03</div>
+                            <h3 id="about-c3-t">Compromiso ROI</h3>
+                            <p id="about-c3-p">Enfoque absoluto en resultados medibles para la propiedad.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicios">
+            <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80');">
+                <div class="banner-text-wrapper">
+                    <h1 id="services-title">Servicios</h1>
+                </div>
+            </div>
+            <div class="page-content-area">
+                <div class="container content-container">
+                    <p id="services-subtitle" class="intro-subtitle">Soluciones directivas de alto impacto diseñadas para fortalecer la estructura operativa y estratégica de su organización.</p>
+                    <div class="mck-grid-cards">
+                        <div class="mck-card">
+                            <div class="card-number">01</div>
+                            <h3 id="ser-c1-t">Dirección General Interim</h3>
+                            <p id="ser-c1-p">Liderazgo ejecutivo (CEO/GM) para periodos de transición, relevo generacional o gestión de filiales.</p>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">02</div>
+                            <h3 id="ser-c2-t">Gestión de Operaciones</h3>
+                            <p id="ser-c2-p">Optimización de la cadena de valor y procesos críticos para mejorar la rentabilidad y eficiencia operativa.</p>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">03</div>
+                            <h3 id="ser-c3-t">Turnaround & Reestructuración</h3>
+                            <p id="ser-c3-p">Intervención directa en situaciones de crisis financiera o operativa para asegurar la viabilidad del negocio.</p>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">04</div>
+                            <h3 id="ser-c4-t">Estrategia de Crecimiento</h3>
+                            <p id="ser-c4-p">Acompañamiento en procesos de expansión, escalado de operaciones y apertura de nuevos mercados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="metodologia">
+            <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80');">
+                <div class="banner-text-wrapper">
+                    <h1 id="method-title">Metodología de Trabajo</h1>
+                </div>
+            </div>
+            <div class="page-content-area">
+                <div class="container content-container">
+                    <p id="method-subtitle" class="intro-subtitle">Un enfoque riguroso inspirado en las mejores prácticas de consultoría global para garantizar una transición exitosa.</p>
+                    <div class="mck-grid-cards">
+                        <div class="mck-card">
+                            <div class="card-number">01</div>
+                            <h3 id="m1-t">Diagnóstico (10 días)</h3>
+                            <p id="m1-p">Análisis profundo de la situación actual, identificación de riesgos críticos y definición de Quick Wins inmediatos.</p>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">02</div>
+                            <h3 id="m2-t">Plan de Acción</h3>
+                            <p id="m2-p">Diseño de una hoja de ruta con KPIs claros y objetivos alineados con la propiedad o consejo de administración.</p>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">03</div>
+                            <h3 id="m3-t">Ejecución y Salida</h3>
+                            <p id="m3-p">Liderazgo activo de la transformación y plan de sucesión ordenado para asegurar la continuidad del éxito.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="formacion">
+            <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=80');">
+                <div class="banner-text-wrapper">
+                    <h1 id="training-title">Formación Ejecutiva</h1>
+                </div>
+            </div>
+            <div class="page-content-area">
+                <div class="content-container">
+                    <p id="training-subtitle" class="intro-subtitle">Programas de capacitación de alto nivel diseñados para dotar a comités de dirección y mandos intermedios de competencias estratégicas disruptivas.</p>
+                    
+                    <div class="mck-grid-2-cols">
+                        <div class="mck-card">
+                            <div class="card-number">01</div>
+                            <h3 id="course-c1-title">Formación Ejecutiva AI First</h3>
+                            <button class="btn-mck" onclick="navigateTo('curso-ai-first')">Explorar Programa</button>
+                        </div>
+                        <div class="mck-card">
+                            <div class="card-number">02</div>
+                            <h3 id="course-c2-title">Gestión de Proyectos de Inteligencia Artificial</h3>
+                            <button class="btn-mck" onclick="navigateTo('curso-pm-ai')">Explorar Programa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="curso-ai-first">
+            <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=80');">
+                <div class="banner-text-wrapper">
+                    <h1 id="sub-ai-title">Formación Ejecutiva AI First</h1>
+                </div>
+            </div>
+            <div class="page-content-area">
+                <div class="content-container">
+                    <div class="sub-actions-wrapper">
+                        <button class="btn-back" onclick="navigateTo('formacion')">
+                            <i class="fa-solid fa-arrow-left"></i> <span class="lbl-back">Volver al Catálogo</span>
+                        </button>
+                        <button class="btn-pdf" onclick="exportCourseToPDF()" id="btn-pdf-generate">
+                            <i class="fa-solid fa-file-pdf"></i> <span id="lbl-pdf-btn">Descargar PDF del Curso</span>
+                        </button>
+                    </div>
+                    
+                    <div class="ai-first-container" id="export-pdf-area">
+                        <div class="program-header">
+                            <div class="title">
+                                <h2 id="p-main-title">Programa <span class="text-teal-corporate">AI FIRST</span></h2>
+                                <p style="color: var(--mck-text-muted); margin-top: 0.5rem;" id="p-main-sub">Formación de IA para Equipos Directivos y Mandos Intermedios</p>
+                            </div>
+                            <div class="program-badge" id="p-main-badge">4 Sesiones | 16 Horas Focus</div>
+                        </div>
+                        
+                        <div class="block-title" id="p-title-val">Propuesta de Valor</div>
+                        <p style="font-size: 1.15rem; color: var(--mck-text-light); margin-bottom: 2rem; font-weight: 300;" id="p-val-desc">El programa no busca formar perfiles técnicos, sino capacitar a líderes...</p>
+                        
+                        <div class="block-title" id="p-title-obj">11 capacidades que la organización adquiere al finalizar</div>
+                        <div class="capacities-grid" id="p-grid-obj"></div>
+                        
+                        <div class="block-title" id="p-title-est">Estructura Detallada del Curso</div>
+                        <div class="sessions-list" style="margin-bottom: 3rem;">
+                            <div class="session-accordion">
+                                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                                    <div class="title-group"><div class="num">01</div><h4 id="s1-t">Sesión 1</h4></div>
+                                    <div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                                </button>
+                                <div class="accordion-content"><ul class="prd-list" id="s1-content-list"></ul></div>
+                            </div>
+                            <div class="session-accordion">
+                                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                                    <div class="title-group"><div class="num">02</div><h4 id="s2-t">Sesión 2</h4></div>
+                                    <div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                                </button>
+                                <div class="accordion-content"><ul class="prd-list" id="s2-content-list"></ul></div>
+                            </div>
+                            <div class="session-accordion">
+                                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                                    <div class="title-group"><div class="num">03</div><h4 id="s3-t">Sesión 3</h4></div>
+                                    <div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                                </button>
+                                <div class="accordion-content"><ul class="prd-list" id="s3-content-list"></ul></div>
+                            </div>
+                            <div class="session-accordion">
+                                <button class="accordion-trigger" onclick="toggleAccordion(this)">
+                                    <div class="title-group"><div class="num">04</div><h4 id="s4-t">Sesión 4</h4></div>
+                                    <div class="chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                                </button>
+                                <div class="accordion-content"><ul class="prd-list" id="s4-content-list"></ul></div>
+                            </div>
+                        </div>
+
+                        <div class="block-title" id="p-title-flow">Metodología de Acompañamiento</div>
+                        <ul class="prd-list" id="p-list-flow" style="margin-bottom: 3rem;"></ul>
+                        
+                        <div class="block-title" id="p-title-ben">Beneficios para la Empresa</div>
+                        <div class="capacities-grid" id="p-grid-ben"></div>
+                        
+                        <div class="block-title" id="p-title-met">Metodología y Herramientas Consultivas</div>
+                        <div class="capacities-grid" id="p-grid-met"></div>
+
+                        <div style="margin-top: 4rem; text-align: center;"><button class="btn-mck" onclick="navigateTo('contacto')" id="p-btn">Solicitar Reunión Exploratoria AI First</button></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="curso-pm-ai">
+            <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80');">
+                <div class="banner-text-wrapper">
+                    <h1 id="sub-pm-title">Gestión de Proyectos de Inteligencia Artificial</h1>
+                </div>
+            </div>
+            <div class="page-content-area">
+                <div class="content-container">
+                    <div class="sub-actions-wrapper">
+                        <button class="btn-back" onclick="navigateTo('formacion')"><i class="fa-solid fa-arrow-left"></i> <span class="lbl-back">Volver al Catálogo</span></button>
+                    </div>
+                    
+                    <div class="ai-first-container">
+                        <div class="program-header">
+                            <div class="title">
+                                <h2 id="pm-main-title">Gestión de Proyectos de <span class="text-teal-corporate">IA</span></h2>
+                                <p style="color: var(--mck-text-muted); margin-top: 0.5rem;" id="pm-main-sub">Planificación, metodologías ágiles y despliegue corporativo escalable</p>
+                            </div>
+                            <div class="program-badge">Próximamente | Coming Soon</div>
+                        </div>
+                        <p style="font-size: 1.2rem; color: var(--mck-text-muted); font-style: italic; text-align: center; padding: 4rem 0;" id="pm-coming-text">El contenido detallado de este programa ejecutivo se encuentra actualmente en fase de estructuración. Disponible próximamente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto">
+            <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1423662055902-359430b057b6?auto=format&fit=crop&w=1200&q=80');">
+                <div class="banner-text-wrapper"><h1 id="contact-title">Contacto</h1></div>
+            </div>
+            <div class="page-content-area">
+                <div class="container content-container">
+                    <p id="contact-subtitle" class="intro-subtitle">Inicie una conversación confidencial.</p>
+                    <form onsubmit="event.preventDefault(); alert('Solicitud enviada');">
+                        <div class="form-group"><label id="lbl-name">Nombre</label><input type="text" required></div>
+                        <div class="form-group"><label id="lbl-email">Email</label><input type="email" required></div>
+                        <div class="form-group"><label id="lbl-msg">Mensaje</label><textarea rows="4" required></textarea></div>
+                        <button type="submit" class="btn-mck" style="width: 100%;" id="btn-submit">Enviar Solicitud</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="color: white; margin-bottom: 1rem;">PROGESCAM<span>.</span>CONSULTING</div>
+                <p id="foot-desc">Liderazgo estratégico inmediato.</p>
+            </div>
+            <div class="footer-col">
+                <h5 id="foot-nav-title">Navegación</h5>
+                <ul>
+                    <li><a onclick="navigateTo('inicio')">Inicio</a></li>
+                    <li><a onclick="navigateTo('sobreMi')">Sobre Mí</a></li>
+                    <li><a onclick="navigateTo('servicios')">Servicios</a></li>
+                    <li><a onclick="navigateTo('metodologia')">Metodología</a></li>
+                    <li><a onclick="navigateTo('formacion')">Formación</a></li>
+                    <li><a onclick="navigateTo('contacto')">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5 id="foot-legal-title">Legal</h5>
+                <ul><li><a id="l-priv">Privacidad</a></li><li><a id="l-cook">Cookies</a></li></ul>
+            </div>
+        </div>
+        <p style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem;" id="foot-copy">&copy; 2026 Progescam Consulting.</p>
+    </footer>
+
+    <script>
+        let currentLang = 'es';
+
+        function toggleAccordion(button) {
+            const accordion = button.parentElement;
+            const isActive = accordion.classList.contains('active');
+            document.querySelectorAll('.session-accordion').forEach(item => item.classList.remove('active'));
+            if (!isActive) accordion.classList.add('active');
+        }
+
+        function navigateTo(sectionId) {
+            document.querySelectorAll('main > section').forEach(s => s.classList.remove('active-section'));
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) targetSection.classList.add('active-section');
+            
+            window.scrollTo({top: 0, behavior: 'auto'});
+            
+            document.querySelectorAll('nav ul li a').forEach(l => l.classList.remove('active'));
+            const menuMapping = (sectionId === 'curso-ai-first' || sectionId === 'curso-pm-ai') ? 'formacion' : sectionId;
+            const activeLink = document.getElementById(`link-${menuMapping}`);
+            if (activeLink) activeLink.classList.add('active');
+        }
+
+        function exportCourseToPDF() {
+            const area = document.getElementById('export-pdf-area');
+            if (!area) return;
+
+            const originalStates = [];
+            const accordions = document.querySelectorAll('.session-accordion');
+            accordions.forEach((acc, i) => {
+                originalStates.push(acc.classList.contains('active'));
+                acc.classList.add('active'); 
+            });
+
+            const filename = currentLang === 'es' ? 'Programa_AI_First_Progescam.pdf' : 'AI_First_Program_Progescam.pdf';
+            const opt = {
+                margin:       [10, 10, 10, 10], 
+                filename:     filename,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0F172A' }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(area).save().then(() => {
+                accordions.forEach((acc, i) => {
+                    if (!originalStates[i]) {
+                        acc.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        const content = {
+            es: {
+                langLabel: "ES | EN",
+                menuTexts: ["Inicio", "Sobre Mí", "Servicios", "Metodología", "Formación", "Contacto"],
+                lblBack: "Volver al Catálogo",
+                lblPdfBtn: "Descargar PDF del Curso",
+                heroTitle: "Dirección Interim Estratégica & Transformación",
+                heroSubtitle: "Resultados acelerados, gestión del cambio y soluciones de liderazgo ejecutivo inmediato para empresas en transición crítica.",
+                heroBtn: "Iniciar Consulta Estratégica",
+                aboutTitle: "Sobre Mí",
+                aboutSubtitle: "Trayectoria ejecutiva senior orientada a aportar estabilidad y criterio estratégico desde el día uno.",
+                "about-c1-t": "Experiencia Senior", "about-c1-p": "Más de 15 años liderando en situaciones de crisis y crecimiento.",
+                "about-c2-t": "Visión 360º", "about-c2-p": "Capacidad de diagnóstico rápido integrando finanzas y operaciones.",
+                "about-c3-t": "Compromiso ROI", "about-c3-p": "Enfoque absoluto en resultados medibles para la propiedad.",
+                "services-title": "Servicios Especializados",
+                "services-subtitle": "Soluciones directivas de alto impacto para fortalecer la estructura operativa y estratégica.",
+                "ser-c1-t": "Dirección General Interim", "ser-c1-p": "Liderazgo ejecutivo (CEO/GM) para periodos de transición o relevo generacional.",
+                "ser-c2-t": "Gestión de Operaciones", "ser-c2-p": "Optimización de la cadena de valor y procesos para mejorar rentabilidad.",
+                "ser-c3-t": "Turnaround & Reestructuración", "ser-c3-p": "Intervención en situaciones de crisis para asegurar la viabilidad.",
+                "ser-c4-t": "Estrategia de Crecimiento", "ser-c4-p": "Acompañamiento en procesos de expansión y nuevos mercados.",
+                "method-title": "Metodología",
+                "method-subtitle": "Un enfoque riguroso inspirado en las mejores prácticas de consultoría global.",
+                "m1-t": "Diagnóstico (10 días)", "m1-p": "Análisis de situación, riesgos críticos y Quick Wins.",
+                "m2-t": "Plan de Acción", "m2-p": "Hoja de ruta con KPIs claros alineados con la propiedad.",
+                "m3-t": "Ejecución y Salida", "m3-p": "Liderazgo activo y plan de sucesión ordenado.",
+                trainingTitle: "Formación Ejecutiva",
+                trainingSubtitle: "Programas de capacitación de alto nivel diseñados para dotar a comités de dirección y mandos intermedios de competencias estratégicas disruptivas.",
+                courseC1Title: "Formación Ejecutiva AI First",
+                courseC2Title: "Gestión de Proyectos de Inteligencia Artificial",
+                subAiTitle: "Formación Ejecutiva AI First",
+                subPmTitle: "Gestión de Proyectos de IA",
+                pmComingText: "El contenido detallado de este programa ejecutivo se encuentra actualmente en fase de estructuración. Disponible próximamente.",
+                pMainTitle: "Programa <span class='text-teal-corporate'>AI FIRST</span>",
+                pMainSub: "Formación de Inteligencia Artificial para Equipos Directivos y Mandos Intermedios",
+                pMainBadge: "4 Sesiones | 16 Horas Focus",
+                pTitleVal: "Propuesta de Valor",
+                pValDesc: "El programa no busca formar perfiles técnicos, sino capacitar a líderes para entender, impulsar y gobernar la implantación de IA en la empresa. Los participantes aprenderán a identificar oportunidades reales de mejora, analizar procesos operativos, valorar el ROI, priorizar casos de uso complejos, diseñar un roadmap de implantación robusto y gestionar los riesgos críticos asociados a la IA y a los nuevos procesos agentizados.",
+                pTitleObj: "11 capacidades que la organización adquiere al finalizar",
+                pObjList: [
+                    "Comprender el potencial estratégico de la IA en entornos corporativos modernos.",
+                    "Adoptar una visión y mentalidad organizativa integrada 'AI First'.",
+                    "Identificar oportunidades legítimas de aumento de valor en los procesos de negocio.",
+                    "Entender el papel disruptivo de los agentes de IA autónomos.",
+                    "Identificar y modelar casos de uso concretos por áreas departamentales.",
+                    "Estimar con rigor el valor financiero y el ROI de las iniciativas tecnológicas.",
+                    "Priorizar iniciativas de forma matricial según valor, viabilidad técnica y riesgo.",
+                    "Construir un Roadmap progresivo de implantación adaptado a la organización.",
+                    "Definir criterios específicos de gobernanza corporativa y supervisión humana.",
+                    "Gestionar riesgos técnicos, cumplimiento normativo y regulación internacional.",
+                    "Impulsar la adopción interna de la IA mediante una adecuada gestión del cambio."
+                ],
+                pTitleEst: "Estructura Detallada del Curso",
+                s1T: "Sesión 1 — De la IA generativa a la empresa AI First",
+                s1List: [
+                    "<strong>Apertura:</strong> Por qué IA First no es solo usar herramientas sueltas, sino rediseñar estructuralmente la forma de trabajar.",
+                    "<strong>Conceptos fundamentales:</strong> Comprensión ejecutiva de IA, IA generativa, Machine Learning, Copilotos, arquitecturas RAG y Agentes.",
+                    "<strong>Capacidades reales:</strong> Qué puede hacer la IA (generar, resumir, clasificar, predecir, recomendar, decidir y ejecutar).",
+                    "<strong>Límites técnicos:</strong> Alucinaciones, sesgos, dependencia del dato, seguridad, privacidad corporativa y falta de contexto de negocio.",
+                    "<strong>Qué significa ser AI First:</strong> Rediseño profundo de procesos, flujos de decisión, nuevos roles y gobernanza usando la IA como palanca estructural.",
+                    "<strong>Anatomía de un Agente IA:</strong> Percepción, razonamiento avanzado, planificación modular, uso autónomo de herramientas, memoria y acción.",
+                    "<strong>Niveles de automatización:</strong> La evolución crítica desde una tarea asistida puntualmente hasta un proceso completamente agentizado.",
+                    "<strong>Ejemplos prácticos y Casos de uso por áreas:</strong> Despliegues en Comercial, Operaciones, Compras, Finanzas, RR. HH., Atención al Cliente, Calidad e IT."
+                ],
+                s2T: "Sesión 2 — Detección de oportunidades de valor y cálculo de ROI",
+                s2List: [
+                    "<strong>Recapitulación:</strong> El puente estratégico de la oportunidad tecnológica pura hacia el valor real de negocio.",
+                    "<strong>Análisis bajo mirada AI First:</strong> Entradas, datos, decisiones, tareas encadenadas, excepciones operativas y salidas finales.",
+                    "<strong>Introducción al AI Value Stream Mapping:</strong> Modelado del mapa de procesos e identificación de puntos clave de intervención (generación, clasificación, búsqueda, predicción).",
+                    "<strong>Áreas de valor:</strong> Reducción de tiempos, mitigación de errores, mejora de servicio, aumento de capacidad y mejor toma de decisiones.",
+                    "<strong>Detección de pérdidas en el mapa actual:</strong> Identificación de esperas, errores, retrabajo, duplicidades y decisiones lentas.",
+                    "<strong>Cálculo de ROI:</strong> Beneficios cuantitativos, cualitativos, costes de implantación, riesgos explícitos y el coste de no actuar.",
+                    "<strong>ROI de procesos agentizados:</strong> Evaluación del impacto en la escalabilidad y el desarrollo de nuevos modelos operativos.",
+                    "<strong>Identificación de puntos agentizables:</strong> Tareas encadenadas, decisiones repetitivas complejas y acciones autónomas entre sistemas de información."
+                ],
+                s3T: "Sesión 3 — Priorización y roadmap progresivo de implantación AI First",
+                s3List: [
+                    "<strong>De la cartera al portfolio AI First:</strong> Organización del inventario de oportunidades detectadas.",
+                    "<strong>Criterios corporativos de priorización:</strong> Análisis de valor de negocio, viabilidad técnica, madurez del dato, integraciones de IT, riesgos y velocidad de adopción.",
+                    "<strong>Matrices de decisión avanzadas:</strong> Impacto vs Esfuerzo, Valor vs Riesgo, Madurez del dato vs Impacto económico directo.",
+                    "<strong>Diseño de la matriz de priorización específica:</strong> Evaluación combinada de Valor, Viabilidad y el Nivel de Autonomía requerido.",
+                    "<strong>Modelo de implantación por fases:</strong> Diseño metodológico de Pilotos, Productos Mínimos Viables (MVP), validación de campo, escalado e industrialización.",
+                    "<strong>Evolución del Roadmap progresivo:</strong> Planificación estratégica del tránsito: Asistente → Copiloto → Automatización → Agente supervisado → Agente autónomo acotado.",
+                    "<strong>Construcción práctica:</strong> Definición de horizontes de despliegue real a 0-90 días, 3-6 meses, 6-12 meses y más de un año."
+                ],
+                s4T: "Sesión 4 — Gobernanza, riesgos, regulación y control de procesos usando agentes",
+                s4List: [
+                    "<strong>Análisis de fricción:</strong> Por qué fallan las transformaciones tradicionales de IA y cómo mitigarlo desde la dirección.",
+                    "<strong>Modelo de Gobernanza AI First:</strong> Estructuración del Comité de IA, Sponsors, Process Owners, Data Owners, IT, Legal, Compliance y RR. HH.",
+                    "<strong>Riesgos principales de la IA:</strong> Privacidad del dato, sesgos algorítmicos, alucinaciones críticas, ciberseguridad avanzada, dependencia de proveedores y propiedad intelectual.",
+                    "<strong>Riesgos específicos de la implantación de agentes:</strong> Acciones erróneas automatizadas, exceso de autonomía no controlada, fuga de datos por inputs y falta de de trazabilidad.",
+                    "<strong>Marco regulatorio internacional y local:</strong> AI Act europeo, implicaciones de RGPD, circulares de la AEPD, directrices de la AESIA, Ley 15/2022 y normativa laboral.",
+                    "<strong>Controles técnicos para agentes:</strong> Arquitecturas Human-in-the-loop (supervisión humana), límites duros de acción, logs auditables, monitorización en tiempo real y revisión periódica.",
+                    "<strong>Modelo operativo de agentes:</strong> Políticas de ciclo de vida del agente, catálogo unificado corporativo y auditorías de comportamiento."
+                ],
+                pTitleFlow: "Metodología de Acompañamiento",
+                pFlowList: [
+                    "Antes de realizar las sesiones de formación se programará una reunión, de una hora de duración como máximo, con las personas responsables de la empresa para poder entender mejor el contexto de la empresa y poder preparar workshops ajustados al mismo y que los participantes puedan hacer ejercicios basados en su propio entorno.",
+                    "En cada sesión se trabajará con escenarios reales y se propondrán ejercicios a realizar durante los siguientes días. Se realizará una sesión online de seguimiento, de una hora de duración, previa a la siguiente sesión, para evaluar el avance de los ejercicios y poder así ajustar los contenidos de dicha sesión, en caso de ser necesario.",
+                    "Una vez se han realizado las 4 sesiones de formación, se programará una sesión final, de una hora de duración, para recapitular y anclar los contenidos explicados y de resultado de los ejercicios."
+                ],
+                pTitleBen: "Beneficios para la Empresa",
+                pBenList: [
+                    "<strong>Comprensión real:</strong> Entender el potencial de la IA directamente aplicado al core de su negocio.",
+                    "<strong>Eficiencia localizada:</strong> Identificar oportunidades concretas de mejora en flujos de procesos vivos.",
+                    "<strong>Evolución táctica:</strong> Detectar qué decisiones pueden ser asistidas, automatizadas o gestionadas por agentes.",
+                    "<strong>Inversión inteligente:</strong> Priorizar iniciativas minimizando riesgos y costes, maximizando el valor y el retorno de inversión.",
+                    "<strong>Hoja de ruta clara:</strong> Construir una planificación progresiva a corto, medio y largo plazo evitando cometer errores comunes.",
+                    "<strong>Impacto real:</strong> Evitar la proliferación de proyectos piloto aislados, desconectados de la cuenta de resultados.",
+                    "<strong>Alineación integral:</strong> Unificar el criterio de la Dirección General, Mandos Intermedios, Procesos, Personas y Tecnología.",
+                    "<strong>Seguridad jurídica:</strong> Implantar sistemas de inteligencia artificial bajo estrictos criterios de gobernanza y cumplimiento normativo."
+                ],
+                pTitleMet: "Metodología y Herramientas Consultivas",
+                pMetList: [
+                    "<strong>Diagnóstico AI First:</strong> Auditoría inicial para evaluar la madurez de los datos y de la infraestructura operativa.",
+                    "<strong>Cuestionario Tripolar:</strong> Análisis avanzado de la organización bajo prismas de Agilidad, Eficiencia y Resiliencia operativa.",
+                    "<strong>AI Value Stream Mapping:</strong> Modelado gráfico de los procesos para detectar ineficiencias y pérdidas ocultas de valor.",
+                    "<strong>Matrices de Priorización:</strong> Clasificación de casos de uso cruzando impacto económico, riesgo y nivel de autonomía."
+                ],
+                pBtn: "Solicitar Reunión Exploratoria AI First",
+                contactTitle: "Hablemos", contactSubtitle: "Inicie una conversación confidencial.",
+                "lbl-name": "Nombre", "lbl-email": "Email", "lbl-msg": "¿Qué reto enfrenta su organización?", "btn-submit": "Enviar Solicitud",
+                footDesc: "Liderazgo estratégico inmediato.", footNav: "Navigation", footLegal: "Legal", lPriv: "Privacidad", lCook: "Cookies", footCopy: "&copy; 2026 Progescam Consulting."
+            },
+            en: {
+                langLabel: "EN | ES",
+                menuTexts: ["Home", "About Me", "Services", "Methodology", "Training", "Contact"],
+                lblBack: "Back to Catalogue",
+                lblPdfBtn: "Download Course PDF",
+                heroTitle: "Strategic Interim Management & Transformation",
+                heroSubtitle: "Accelerated results and immediate executive leadership for critical transition periods.",
+                heroBtn: "Start Strategic Inquiry",
+                aboutTitle: "About Me",
+                aboutSubtitle: "Senior executive track record delivering stability and strategic judgment from day one.",
+                "about-c1-t": "Senior Experience", "about-c1-p": "15+ years leading through crisis and high-growth scenarios.",
+                "about-c2-t": "360º Vision", "about-c2-p": "Rapid diagnostics across finance and operations.",
+                "about-c3-t": "ROI Commitment", "about-c3-p": "Absolute focus on measurable results for stakeholders.",
+                "services-title": "Specialized Services",
+                "services-subtitle": "High-impact executive solutions to strengthen operational and strategic structures.",
+                "ser-c1-t": "Interim General Management", "ser-c1-p": "Executive leadership (CEO/GM) for transitions or succession planning.",
+                "ser-c2-t": "Operations Management", "ser-c2-p": "Value chain optimization and core process efficiency.",
+                "ser-c3-t": "Turnaround & Restructuring", "ser-c3-p": "Direct intervention in crisis to ensure business viability.",
+                "ser-c4-t": "Growth Strategy", "ser-c4-p": "Support in expansion processes and new market entry.",
+                "method-title": "Methodology",
+                "method-subtitle": "Rigorous framework inspired by global consulting best practices.",
+                "m1-t": "Diagnosis (10 days)", "m1-p": "In-depth analysis, critical risks, and Quick Wins.",
+                "m2-t": "Action Roadmap", "m2-p": "Timeline with clear KPIs aligned with the board.",
+                "m3-t": "Execution & Offboarding", "m3-p": "Hands-on leadership driving organizational transformation and an orderly succession.",
+                trainingTitle: "Executive Training",
+                trainingSubtitle: "High-level education frameworks structured to provide directors and management teams with highly disruptive capabilities.",
+                courseC1Title: "AI First Executive Training",
+                courseC2Title: "Artificial Intelligence Project Management",
+                subAiTitle: "AI First Executive Training",
+                subPmTitle: "AI Project Management",
+                pmComingText: "The core content of this executive roadmap is currently being structured. Available soon.",
+                pMainTitle: "<span class='text-teal-corporate'>AI FIRST</span> Program",
+                pMainSub: "AI for Executive Teams and Management",
+                pMainBadge: "4 Sessions | 16 Hours Focus",
+                pTitleVal: "Value Proposition",
+                pValDesc: "This program does not seek to train technical profiles, but to empower leaders to understand, drive, and govern AI implementation across the enterprise. Participants will learn to identify real opportunities for improvement, analyze operational processes, evaluate ROI, prioritize complex use cases, design a robust implementation roadmap, and manage critical risks associated with AI and new agentic processes.",
+                pTitleObj: "11 capabilities acquired by the organization upon completion",
+                pObjList: [
+                    "Understand the strategic potential of AI in modern corporate environments.",
+                    "Adopt an integrated 'AI First' vision and organizational mindset.",
+                    "Identify legitimate value-added opportunities within business processes.",
+                    "Understand the disruptive role of autonomous AI agents.",
+                    "Identify and model specific use cases across departmental areas.",
+                    "Rigorously estimate financial value and ROI for technological initiatives.",
+                    "Prioritize initiatives matrix-style based on value, technical feasibility, and risk.",
+                    "Build a progressive, custom-tailored implementation Roadmap for the organization.",
+                    "Define strict criteria for corporate governance and human oversight.",
+                    "Manage technical risks, regulatory compliance, and international law.",
+                    "Drive internal AI adoption through proper change management strategies."
+                ],
+                pTitleEst: "Course Structure",
+                s1T: "Session 1 — From Generative AI to the AI First Enterprise",
+                s1List: [
+                    "<strong>Opening:</strong> Why AI First is not just about using isolated tools, but structurally redesigning the way we work.",
+                    "<strong>Core Concepts:</strong> Executive understanding of AI, Generative AI, Machine Learning, Copilots, RAG architectures, and Agents.",
+                    "<strong>Real Capabilities:</strong> What AI can do (generate, summarize, classify, predict, recommend, decide, and execute).",
+                    "<strong>Technical Limits:</strong> Hallucinations, biases, data dependency and quality, security, corporate privacy, and lack of business context.",
+                    "<strong>What it Means to be AI First:</strong> Deep redesign of processes, decision flows, new roles, and governance using AI as a structural lever.",
+                    "<strong>Anatomy of an AI Agent:</strong> Perception, advanced reasoning, planning modular, use autónomo de herramientas, memoria y acción.",
+                    "<strong>Automation Levels:</strong> The critical evolution from a punctually assisted task to a fully agentic process.",
+                    "<strong>Practical Examples & Use Cases:</strong> Deployments in Sales, Operations, Procurement, Finance, HR, Customer Service, Quality, and IT."
+                ],
+                s2T: "Session 2 — Value Detection and ROI Calculation",
+                s2List: [
+                    "<strong>Recap:</strong> Driving the strategic bridge from pure technological opportunity to tangible business value.",
+                    "<strong>Analysis under an AI First Lens:</strong> Inputs, data, decisions, linked tasks, operational exceptions, and final outputs.",
+                    "<strong>Introduction to AI Value Stream Mapping:</strong> Modeling process maps and identifying key intervention milestones (generation, classification, search, prediction).",
+                    "<strong>Habitual Value Hubs:</strong> Drastic reduction of cycle times, mitigation of human error, service enhancement, capacity scaling, and optimized decision-making.",
+                    "<strong>Detecting Losses in Current Maps:</strong> Spotting bottlenecks, errors, rework, redundancies, and slow decision-making.",
+                    "<strong>Advanced ROI Calculation:</strong> Quantitative and qualitative benefits, direct implementation costs, explicit risks, and the cost of inaction.",
+                    "<strong>ROI of Agentic Processes:</strong> Evaluating the impact on business scalability and the development of new operating models.",
+                    "<strong>Identifying Agentic Milestones:</strong> Linked tasks, complex repetitive decisions, and autonomous cross-system actions."
+                ],
+                s3T: "Session 3 — Prioritization and Progressive AI First Implementation Roadmap",
+                s3List: [
+                    "<strong>From Opportunity to Portfolio:</strong> Organizing the inventory of detected AI First opportunities.",
+                    "<strong>Corporate Prioritization Criteria:</strong> Analyzing business value, technical feasibility, data maturity, IT integration, risk, and adoption speed.",
+                    "<strong>Advanced Decision Matrices:</strong> Impact vs Effort, Value vs Risk, Data Maturity vs Economic Impact.",
+                    "<strong>Specific Prioritization Matrix Design:</strong> Combined evaluation of Value, Feasibility, and the required Autonomy Level.",
+                    "<strong>Phase-Based Deployment Models:</strong> Methodological design of Pilots, Minimum Viable Products (MVP), field validation, scaling, and industrialization.",
+                    "<strong>Progressive Roadmap Evolution:</strong> Strategic planning of the transition: Assistant → Copilot → Automation → Supervised Agent → Bounded Autonomous Agent.",
+                    "<strong>Roadmap Construction:</strong> Defining real deployment horizons at 0-90 days, 3-6 months, 6-12 months, and 12+ months."
+                ],
+                s4T: "Session 4 — Governance, Risks, Regulation, and Process Control Using Agents",
+                s4List: [
+                    "<strong>Friction Analysis:</strong> Why traditional AI transformations fail and how management can mitigate it.",
+                    "<strong>AI First Governance Model:</strong> Structuring the AI Committee, Sponsors, Process Owners, Data Owners, IT, Legal, Compliance, and HR.",
+                    "<strong>Core AI Risks:</strong> Data privacy, algorithmic bias, critical hallucinations, advanced cybersecurity, vendor lock-in, and intellectual property.",
+                    "<strong>Agent-Specific Deployment Risks:</strong> Erroneous automated actions, unchecked autonomy excess, data leakage through inputs, and lack of traceability.",
+                    "<strong>International & Local Regulatory Frameworks:</strong> European AI Act, GDPR implications, data protection agency circulars, and labor compliance.",
+                    "<strong>Technical Controls for Agents:</strong> Human-in-the-loop architectures (human supervision), hard action limits, auditable logs, real-time monitoring, and periodic reviews.",
+                    "<strong>Agent Operating Model:</strong> Agent lifecycle policies, unified corporate agent catalog, and behavioral audits."
+                ],
+                pTitleFlow: "Program Acompañamiento Methodology",
+                pFlowList: [
+                    "Prior to conducting the training sessions, an initial alignment meeting (maximum 1 hour) will be scheduled with the company stakeholders to better understand the organizational context, tailor the internal workshops, and ensure exercises are anchored to their active business ecosystems.",
+                    "Each session focuses on parsing real business scenarios and defines practical actions/exercises to rollout over the subsequent days. A 1-hour online follow-up sprint will be executed prior to the next module to evaluate progress, review feedback, and fine-tune next content sets if needed.",
+                    "Once the 4 focus core sessions are accomplished, a final 1-hour recap roadmap alignment will be scheduled to anchor the conceptual modules and maximize overall exercise outputs."
+                ],
+                pTitleBen: "Benefits for the Enterprise",
+                pBenList: [
+                    "<strong>Comprensión real:</strong> Grasping the real potential of AI directly applied to your core business.",
+                    "<strong>Smart Investment:</strong> Prioritizing initiatives while minimizing risks and costs, maximizing business value and ROI.",
+                    "<strong>Integral Alignment:</strong> Unifying the criteria of general management, mid-management, and IT.",
+                    "<strong>Legal Safety:</strong> Deploying artificial intelligence systems under strict corporate governance criteria."
+                ],
+                pTitleMet: "Methodology & Consultative Tools",
+                pMetList: [
+                    "AI First Maturity Diagnosis metrics.",
+                    "Tripolar Questionnaire (Agility, Efficiency, Resilience).",
+                    "Graphic operational AI Value Stream Mapping.",
+                    "Analytical decision matrices (Value vs Risk)."
+                ],
+                pBtn: "Request AI First Exploratory Meeting",
+                contactTitle: "Contact Us", contactSubtitle: "Start a confidential conversation.",
+                "lbl-name": "Name", "lbl-email": "Email", "lbl-msg": "What organizational challenge are you facing?", "btn-submit": "Submit Request",
+                footDesc: "Immediate strategic leadership.", footNav: "Navigation", footLegal: "Legal", lPriv: "Privacy", lCook: "Cookies", footCopy: "&copy; 2026 Progescam Consulting."
+            }
+        };
+
+        function renderBoxes(elementId, itemsArray) {
+            const container = document.getElementById(elementId);
+            if(container) {
+                container.innerHTML = '';
+                itemsArray.forEach(text => {
+                    const div = document.createElement('div');
+                    div.className = 'capacity-box';
+                    div.innerHTML = text;
+                    container.appendChild(div);
+                });
+            }
+        }
+
+        function renderList(elementId, itemsArray) {
+            const container = document.getElementById(elementId);
+            if(container) {
+                container.innerHTML = '';
+                itemsArray.forEach(text => {
+                    const li = document.createElement('li');
+                    li.innerHTML = text;
+                    container.appendChild(li);
+                });
+            }
+        }
+
+        function updateContent() {
+            const data = content[currentLang];
+            document.getElementById('lang-btn').innerText = data.langLabel;
+            
+            const navIds = ['inicio', 'sobreMi', 'servicios', 'metodologia', 'formacion', 'contacto'];
+            navIds.forEach((id, index) => {
+                const link = document.getElementById(`link-${id}`);
+                if(link) link.innerText = data.menuTexts[index];
+            });
+
+            document.querySelectorAll('.lbl-back').forEach(el => el.innerText = data.lblBack);
+            document.getElementById('lbl-pdf-btn').innerText = data.lblPdfBtn;
+
+            document.getElementById('hero-title').innerHTML = data.heroTitle;
+            document.getElementById('hero-subtitle').innerText = data.heroSubtitle;
+            document.getElementById('hero-btn').innerText = data.heroBtn;
+
+            document.getElementById('about-title').innerText = data.aboutTitle;
+            document.getElementById('about-subtitle').innerText = data.aboutSubtitle;
+            document.getElementById('about-c1-t').innerText = data["about-c1-t"];
+            document.getElementById('about-c1-p').innerText = data["about-c1-p"];
+            document.getElementById('about-c2-t').innerText = data["about-c2-t"];
+            document.getElementById('about-c2-p').innerText = data["about-c2-p"];
+            document.getElementById('about-c3-t').innerText = data["about-c3-t"];
+            document.getElementById('about-c3-p').innerText = data["about-c3-p"];
+
+            document.getElementById('services-title').innerText = data['services-title'];
+            document.getElementById('services-subtitle').innerText = data['services-subtitle'];
+            document.getElementById('ser-c1-t').innerText = data['ser-c1-t'];
+            document.getElementById('ser-c1-p').innerText = data['ser-c1-p'];
+            document.getElementById('ser-c2-t').innerText = data['ser-c2-t'];
+            document.getElementById('ser-c2-p').innerText = data['ser-c2-p'];
+            document.getElementById('ser-c3-t').innerText = data['ser-c3-t'];
+            document.getElementById('ser-c3-p').innerText = data['ser-c3-p'];
+            document.getElementById('ser-c4-t').innerText = data['ser-c4-t'];
+            document.getElementById('ser-c4-p').innerText = data['ser-c4-p'];
+
+            document.getElementById('method-title').innerText = data['method-title'];
+            document.getElementById('method-subtitle').innerText = data['method-subtitle'];
+            document.getElementById('m1-t').innerText = data['m1-t'];
+            document.getElementById('m1-p').innerText = data['m1-p'];
+            document.getElementById('m2-t').innerText = data['m2-t'];
+            document.getElementById('m2-p').innerText = data['m2-p'];
+            document.getElementById('m3-t').innerText = data['m3-t'];
+            document.getElementById('m3-p').innerText = data['m3-p'];
+
+            document.getElementById('training-title').innerText = data.trainingTitle;
+            document.getElementById('training-subtitle').innerText = data.trainingSubtitle;
+            document.getElementById('course-c1-title').innerText = data.courseC1Title;
+            document.getElementById('course-c2-title').innerText = data.courseC2Title;
+            
+            document.getElementById('sub-ai-title').innerText = data.subAiTitle;
+            document.getElementById('sub-pm-title').innerText = data.subPmTitle;
+            document.getElementById('pm-coming-text').innerText = data.pmComingText;
+
+            document.getElementById('p-main-title').innerHTML = data.pMainTitle;
+            document.getElementById('p-main-sub').innerText = data.pMainSub;
+            document.getElementById('p-main-badge').innerText = data.pMainBadge;
+            document.getElementById('p-title-val').innerText = data.pTitleVal;
+            document.getElementById('p-val-desc').innerText = data.pValDesc;
+            document.getElementById('p-title-obj').innerText = data.pTitleObj;
+            document.getElementById('p-title-est').innerText = data.pTitleEst;
+            document.getElementById('p-title-flow').innerText = data.pTitleFlow;
+            document.getElementById('p-title-ben').innerText = data.pTitleBen;
+            document.getElementById('p-title-met').innerText = data.pTitleMet;
+            
+            document.getElementById('s1-t').innerText = data.s1T;
+            document.getElementById('s2-t').innerText = data.s2T;
+            document.getElementById('s3-t').innerText = data.s3T;
+            document.getElementById('s4-t').innerText = data.s4T;
+            document.getElementById('p-btn').innerText = data.pBtn;
+
+            // ACTIVACIÓN DE LA CARGA DE DATOS EN LA MATRIZ DE CAJAS
+            renderBoxes('p-grid-obj', data.pObjList);
+            renderBoxes('p-grid-ben', data.pBenList);
+            renderBoxes('p-grid-met', data.pMetList);
+            
+            renderList('s1-content-list', data.s1List);
+            renderList('s2-content-list', data.s2List);
+            renderList('s3-content-list', data.s3List);
+            renderList('s4-content-list', data.s4List);
+            renderList('p-list-flow', data.pFlowList);
+
+            document.getElementById('contact-title').innerText = data.contactTitle;
+            document.getElementById('contact-subtitle').innerText = data.contactSubtitle;
+            document.getElementById('lbl-name').innerText = data['lbl-name'];
+            document.getElementById('lbl-email').innerText = data['lbl-email'];
+            document.getElementById('lbl-msg').innerText = data['lbl-msg'];
+            document.getElementById('btn-submit').innerText = data['btn-submit'];
+
+            document.getElementById('foot-desc').innerText = data.footDesc;
+            document.getElementById('foot-nav-title').innerText = data.footNav;
+            document.getElementById('foot-legal-title').innerText = data.footLegal;
+            document.getElementById('l-priv').innerText = data.lPriv;
+            document.getElementById('l-cook').innerText = data.lCook;
+            document.getElementById('foot-copy').innerHTML = data.footCopy;
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            updateContent();
+        }
+
+        updateContent();
+    </script>
+</body>
+</html>
